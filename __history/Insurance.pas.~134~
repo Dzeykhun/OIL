@@ -1,0 +1,524 @@
+unit Insurance;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.ComCtrls, Data.DB,
+  Vcl.Grids, Vcl.DBGrids, Vcl.Menus, System.Actions, Vcl.ActnList, Vcl.StdCtrls,
+  Vcl.Buttons, System.ImageList, Vcl.ImgList, Data.Win.ADODB, System.StrUtils;
+
+type
+  TInsuranceForm = class(TForm)
+    SB: TStatusBar;
+    InsuranceGrid: TDBGrid;
+    BtnInsPanel: TPanel;
+    AddBitBt: TBitBtn;
+    CorBitBt: TBitBtn;
+    DeleteBitBt: TBitBtn;
+    TransferBitBt: TBitBtn;
+    RefreshBitBt: TBitBtn;
+    SearchGB: TGroupBox;
+    FindEdit: TEdit;
+    FindCB: TComboBox;
+    FindBtn: TBitBtn;
+    ReserveChB: TCheckBox;
+    AL: TActionList;
+    PM: TPopupMenu;
+    AddAction: TAction;
+    CorrAction: TAction;
+    DeleteAction: TAction;
+    RefreshAction: TAction;
+    TransferAction: TAction;
+    IL: TImageList;
+    FindAction: TAction;
+    SetInsDetailBitBt: TBitBtn;
+    RangeBitBt: TBitBtn;
+    RangeAction: TAction;
+    StoryBtn: TBitBtn;
+    StoryAction: TAction;
+    procedure InsuranceGridTitleClick(Column: TColumn);
+    procedure InsuranceGridDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure AddActionExecute(Sender: TObject);
+    procedure RefreshActionExecute(Sender: TObject);
+    procedure CorrActionExecute(Sender: TObject);
+    procedure TransferActionExecute(Sender: TObject);
+    procedure DeleteActionExecute(Sender: TObject);
+    procedure FindEditChange(Sender: TObject);
+    procedure FindCBKeyPress(Sender: TObject; var Key: Char);
+    procedure FindActionExecute(Sender: TObject);
+    procedure RangeActionExecute(Sender: TObject);
+    procedure StoryActionExecute(Sender: TObject);
+  private
+    FEndDate: TDateTime;
+    FBegDate: TDateTime;
+    FiTypeF: Shortint;
+    procedure SetLimitSettingModal();
+    procedure SetInfoSB();
+    procedure SetBegDate(const Value: TDateTime);
+    procedure SetEndDate(const Value: TDateTime);
+    procedure SetStorySetting(UID :integer);
+    procedure SetiTypeF(const Value: Shortint);
+  protected
+    property iTypeF : Shortint read FiTypeF write SetiTypeF;
+  public
+    { Public declarations }
+  constructor Create (value : shortint); overload;
+  published
+    property BegDate: TDateTime read FBegDate write SetBegDate ;
+    property EndDate: TDateTime read FEndDate write SetEndDate ;
+
+  end;
+
+
+
+var
+  InsuranceForm: TInsuranceForm;
+
+implementation
+
+{$R *.dfm}
+
+uses AppData, SConst, InsuranceDetail, Date;
+
+procedure TInsuranceForm.AddActionExecute(Sender: TObject);
+var
+  InsD :TInsuranceDetailForm;
+begin
+  InsD := TInsuranceDetailForm.Create(Application);
+
+  WITH InsD do
+  try
+    if ShowModal = mrOk then
+    try
+      AppDM.Command.CommandText := Format(SSQLInsInsurance, [StrToInt(IfThen(SerialEdit.Text = EmptyStr,'0', SerialEdit.Text)),
+                                                            StrToInt(IfThen(NumberEdit.Text = EmptyStr,'0', NumberEdit.Text)),
+                                                            FormatDateTime('yyyy-mm-dd', BegDP.Date),
+                                                            FormatDateTime('yyyy-mm-dd', EndDP.Date),
+                                                            FormatDateTime('yyyy-mm-dd', DocDP.Date),
+                                                            UID_Car,
+                                                            'ADE',
+                                                            byte(InsD.ReserveCB.Checked),
+                                                            PrimechMemo.Text ]);
+      AppDM.Command.Execute
+    except
+      on Err: Exception do
+        ShowMessage('Ошибка');
+    end;
+  finally
+    FreeAndNil(InsD);
+    RefreshActionExecute(self);
+  end;
+end;
+
+procedure TInsuranceForm.CorrActionExecute(Sender: TObject);
+var
+  Insd : TInsuranceDetailForm;
+begin
+
+  try
+    if (appdm.Insurance.Active) and (not AppDM.Insurance.IsEmpty) then
+    try
+      if AppDM.Insurance.FieldByName('Archive').AsString = EmptyStr then
+        Insd := TInsuranceDetailForm.create(Application)
+      else
+        insd := TInsuranceDetailForm.Create(g_view);
+
+      AppDM.InsuranceDetail.Active := false;
+      AppDM.InsuranceDetail.CommandText := format(ssqlGetInsuranceDetail, [AppDM.Insurance.FieldByName('UID').AsInteger]);
+      AppDM.InsuranceDetail.Active := true;
+
+      if not AppDM.InsuranceDetail.IsEmpty then
+      with Insd do
+      begin
+        SerialEdit.Text := AppDM.InsuranceDetail.FieldByName('SERIAL').AsString;
+        NumberEdit.Text := AppDM.InsuranceDetail.FieldByName('NUMBER').AsString;
+        ModelCarEdit.Text := AppDM.InsuranceDetail.FieldByName('MODEL').AsString;
+        RegSymCarEdit.Text := AppDM.InsuranceDetail.FieldByName('REG_SYBMOL').AsString;
+        TypeCarEdit.Text := AppDM.InsuranceDetail.FieldByName('TYPE_TC').AsString;
+        ColorCarEdit.Text := AppDM.InsuranceDetail.FieldByName('COLOR').AsString;
+        YearCarEdit.Text := AppDM.InsuranceDetail.FieldByName('MADEYEAR').AsString;
+        PrimechMemo.Text := AppDM.InsuranceDetail.FieldByName('primech').AsString;
+
+
+        DocDP.Date := AppDM.InsuranceDetail.FieldByName('DOC_DATE').AsDateTime;
+        BegDP.Date := AppDM.InsuranceDetail.FieldByName('BEGDATE').AsDateTime;
+        EndDP.Date := AppDM.InsuranceDetail.FieldByName('ENDDATE').AsDateTime;
+
+        UID_Car := AppDM.InsuranceDetail.FieldByName('UID_CAR').AsInteger;
+
+        if ShowModal = mrOK then
+        try
+          AppDM.Command.CommandText := Format(SSQLCorrIns,[AppDM.Insurance.FieldByName('UID').AsInteger,
+                                                                                StrToInt(IfThen(SerialEdit.Text = EmptyStr, '0', SerialEdit.Text)),
+                                                                                StrToInt(IfThen(NumberEdit.Text = EmptyStr, '0', NumberEdit.Text)),
+                                                                                FormatDateTime('yyyy-mm-dd', BegDP.Date),
+                                                                                FormatDateTime('yyyy-mm-dd', EndDP.Date),
+                                                                                FormatDateTime('yyyy-mm-dd', DocDP.Date),
+                                                                                UID_Car,
+                                                                                'ADE',
+                                                                                Byte(InsD.ReserveCB.Checked),
+                                                                                PrimechMemo.Text]);
+
+          AppDM.Command.Execute;
+        except
+          on Err : exception do
+          ShowMessage('Ошибка сохраенения изменения страхового документа' + #13 + 'Сообщения' + Err.Message);
+        end;
+      end;
+    except
+      on Err : exception do
+      ShowMessage('Ошибка изменения страхового документа' + #13 + 'Сообщения' + Err.Message);
+    end;
+  finally
+    Freeandnil(Insd);
+    RefreshActionExecute(SELF);
+  end;
+
+end;
+
+constructor TInsuranceForm.Create(value: shortint);
+begin
+  inherited Create(Application);
+   BegDate := now();
+   EndDate := BegDate + 1;
+   Self.iTypeF := value;
+  case value of
+    0: ;
+    1: SetLimitSettingModal() ;
+    2: SetStorySetting(AppDM.Insurance.FieldByName('UID').AsInteger);
+  end;
+
+
+end;
+
+procedure TInsuranceForm.DeleteActionExecute(Sender: TObject);
+begin
+
+       if (AppDM.Insurance.Active) and
+          (not AppDM.Insurance.IsEmpty) and
+          (AppDM.Insurance.FieldByName('Archive').AsString = EmptyStr) then
+       try
+         if MessageBox(Handle, 'Вы действительно хотите удалить документ?',  'Удалить документ', MB_ICONSTOP + MB_YESNO) = ID_YES then
+         try
+          AppDM.Command.CommandText := format(SSQLDeleteInsuranse, [AppDM.Insurance.FieldByName('UID').AsInteger]);
+          appdm.Command.Execute;
+         except
+            on Err : exception do
+            MessageDlg('Ошибка сохраенения изменения страхового документа' + #13 + 'Сообщения' + Err.Message, mtError ,[mbOK],0 );
+         end;
+       finally
+         RefreshActionExecute(self);
+       end;
+end;
+
+procedure TInsuranceForm.FindEditChange(Sender: TObject);
+begin
+if Length(Trim(FindEdit.Text)) = 0 then
+    Begin
+      AppDM.Insurance.Filtered := False;
+      AppDM.Insurance.Filter := EmptyStr;
+      FindBtn.Enabled := False;
+    end
+  else
+      FindBtn.Enabled := True;
+end;
+
+{procedure TInsuranceForm.FindEditChange(Sender: TObject);
+begin
+if Length(Trim(FindEdit.Text)) = 0 then
+    Begin
+      AppDM.Insurance.Filtered := False;
+      AppDM.Insurance.Filter := EmptyStr;
+      FindBtn.Enabled := False;
+    end
+  else
+      FindBtn.Enabled := True;
+end;  }
+
+procedure TInsuranceForm.FindActionExecute(Sender: TObject);
+var
+    strFilter: string;
+begin
+  case FindCB.ItemIndex of
+    0: strFilter := ' SERIAL = ' + Trim(FindEdit.Text);
+    1: strFilter := ' NUMBER = ' + Trim(FindEdit.Text);
+    2: strFilter := ' InsConcat LIKE ' + QuotedStr('%' + Trim(FindEdit.Text) + '%');
+  end;
+
+  if Length(Trim(strFilter)) > 0 then
+    Begin
+      AppDM.Insurance.Filter := strFilter;
+      AppDM.Insurance.Filtered := True;
+    end;
+
+end;
+
+procedure TInsuranceForm.FindCBKeyPress(Sender: TObject; var Key: Char);
+begin
+    case FindCB.ItemIndex of
+      0, 1: begin
+             case Key of
+                '0'..'9': ;
+                #13: ;
+                #8: ;
+             else
+                Key := #0;
+             end;
+           end;
+      2:   begin
+             case Key of
+                '0'..'9': ;
+                #13: ;
+                #8: ;
+                #32: ;
+             else
+                Key := #0;
+             end;
+           end;
+      end;
+end;
+
+
+procedure TInsuranceForm.InsuranceGridDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  if AppDm.insurance.FieldByName('Reserve').AsBoolean = true then
+    insuranceGrid.Canvas.Brush.Color := clRed;
+    if AppDm.insurance.FieldByName('Archive').AsString = 'Да' then
+    insuranceGrid.Canvas.Brush.Color := clScrollBar;
+
+    if (Column.FieldName = 'ValidDay') and  (AppDm.insurance.FieldByName('Archive').AsString = EmptyStr) then
+    begin
+      if Column.Field.AsInteger > 5 then
+        InsuranceGrid.Canvas.Brush.Color := clLime
+
+      else
+      if Column.Field.AsInteger <= 5 then
+        InsuranceGrid.Canvas.Brush.Color := clOlive
+
+      else
+      if Column.Field.AsInteger < 0 then
+        InsuranceGrid.Canvas.Brush.Color := clRed;
+    end;
+
+
+    insuranceGrid.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+
+end;
+
+procedure TInsuranceForm.InsuranceGridTitleClick(Column: TColumn);
+var
+  Str: string;
+begin
+  if Assigned(Column) and Assigned(Column.Field) and
+    (Column.Field.FieldKind = fkData) then
+    with TADODataset(Column.Grid.DataSource.Dataset) do
+    begin
+      Str := Column.FieldName;
+      if Pos(Str, IndexFieldNames) = 0 then
+        IndexFieldNames := Str
+      else
+        if Pos('DESC', IndexFieldNames) > 0 then
+          IndexFieldNames := Str
+        else
+          IndexFieldNames := Str + ' DESC';
+    end;
+
+end;
+
+procedure TInsuranceForm.RangeActionExecute(Sender: TObject);
+var
+  RangeF : TRangeForm;
+begin
+  RangeF := TRangeForm.Create(Application);
+  try
+    RangeF.BegDTP.Date := BegDate;
+    RangeF.EndDTP.Date := EndDate;
+    if RangeF.ShowModal = mrOk then
+    begin
+      BegDate := RangeF.BegDTP.Date;
+      EndDate := RangeF.ENDDTP.Date;
+    end;
+  finally
+    FreeAndNil(RangeF);
+    RefreshActionExecute(self);
+  end;
+end;
+
+procedure TInsuranceForm.RefreshActionExecute(Sender: TObject);
+begin
+  try
+    Screen.Cursor := crSQLWait;
+    AppDM.Insurance.Active := false;
+    AppDM.Insurance.CommandText := Format(SSQLGetInsurance, [byte(ReserveChB.Checked),
+                                                             FormatDateTime('yyyy-mm-dd', BegDate),
+                                                             FormatDateTime('yyyy-mm-dd', EndDate)]);
+     AppDM.Insurance.Active := true;
+
+
+  SetInfoSB();
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TInsuranceForm.SetBegDate(const Value: TDateTime);
+begin
+  FBegDate := Value;
+end;
+
+procedure TInsuranceForm.SetEndDate(const Value: TDateTime);
+begin
+  FEndDate := Value;
+end;
+
+procedure TInsuranceForm.SetInfoSB;
+var
+    ires : SmallInt;
+    iarc : SmallInt;
+begin
+  ires := 0;
+  iarc := 0;
+  if AppDM.Insurance.Active then
+  begin
+
+    case byte(ReserveChB.Checked) of
+    0:
+          SB.Panels[0].Text :='Всего документов: ' + IntToStr(AppDM.Insurance.RecordCount) ;
+
+    1:  begin
+          SB.Panels[0].Text :='Всего документов: ' + IntToStr(AppDM.Insurance.RecordCount) ;
+          AppDM.Insurance.First;
+          while not AppDM.Insurance.Eof do
+            begin
+              if AppDM.Insurance.FieldByName('Reserve').AsBoolean = true then
+                ires := ires + 1;
+                AppDM.Insurance.Next
+            end;
+
+
+           SB.Panels[1].Text :='В резерве: ' + IntToStr(ires) ;
+        end;
+    end;
+   case byte(ReserveChB.Checked) of
+    0: ;
+    1:begin
+        AppDM.Insurance.First;
+        while not AppDM.Insurance.Eof do
+        begin
+          if AppDM.Insurance.FieldByName ('Archive').AsString = 'Да' then
+            iarc := iarc + 1;
+            AppDM.Insurance.Next;
+        end;
+        SB.Panels[2].text := 'архивные документы: ' + inttostr(iarc);
+      end;
+   end;
+  end;
+end;
+
+procedure TInsuranceForm.SetiTypeF(const Value: Shortint);
+begin
+  FiTypeF := Value;
+end;
+
+procedure TInsuranceForm.SetLimitSettingModal;
+begin
+   AppDM.Insurance.Active := false;
+   AppDM.Insurance.CommandText := Format(SSQLGetInsurance, [0,
+                                                             FormatDateTime('yyyy-mm-dd', BegDate),
+                                                             FormatDateTime('yyyy-mm-dd', EndDate)]);
+   AppDM.Insurance.Active := true;
+
+    try
+        AddAction.Enabled := False;
+        CorrAction.Enabled := False;
+        DeleteAction.Enabled := False;
+        TransferAction.Enabled := False;
+        ReserveChB.Enabled := false;
+
+        with InsuranceGrid do
+        Begin
+          Columns[8].Visible := False;
+          Columns[9].Visible := False;
+          Columns[11].Visible := False;
+          Columns[12].Visible := False;
+          Columns[13].Visible := False;
+          Columns[14].Visible := False;
+          Columns[16].Visible := False;
+        end;
+
+        with SetInsDetailBitBt do
+        begin
+            Parent := BtnInsPanel;
+            Left := TransferBitBt.Left;
+            top := TransferBitBt.top;
+            Visible := true;
+            ModalResult := mrOk;
+        end;
+        self.Width := 515;
+    finally
+
+    end;
+
+
+end;
+
+
+procedure TInsuranceForm.SetStorySetting(UID :integer);
+begin
+  AppDM.Insurance.Active := false;
+   AppDM.Insurance.CommandText := Format(SSQLGetInsuranseArc, [UID]);
+   AppDM.Insurance.Active := true;
+
+    try
+        AddAction.Enabled := False;
+        CorrAction.Enabled := False;
+        DeleteAction.Enabled := False;
+        TransferAction.Enabled := False;
+        ReserveChB.Enabled := false;
+        StoryBtn.Enabled := false;
+        RefreshBitBt.Enabled := false;
+
+
+    finally
+
+    end;
+
+end;
+
+procedure TInsuranceForm.StoryActionExecute(Sender: TObject);
+var
+    insf : TInsuranceForm;
+begin
+    if (AppDM.Insurance.Active) and (not AppDM.Insurance.IsEmpty) then
+
+end;
+
+procedure TInsuranceForm.TransferActionExecute(Sender: TObject);
+begin
+  if (AppDM.Insurance.Active) and
+   (not AppDM.Insurance.IsEmpty) then
+
+
+    try
+      if AppDM.Insurance.FieldByName('reserve').AsBoolean = false then
+      begin
+        if MessageBox(Handle, 'Вы действительно хотите перевести документ в резерв?', 'Перевод документа ', MB_ICONWARNING + MB_YESNO  )= ID_YES then
+        begin
+          AppDM.Command.CommandText := Format(SSQLTransferInsurance,[AppDM.Insurance.FieldByName('UID').AsInteger ,1, 'ADE']);
+          AppDM.Command.Execute;
+        end;
+      end
+      else
+      begin
+         AppDM.Command.CommandText := Format(SSQLTransferInsurance,[AppDM.Insurance.FieldByName('UID').AsInteger ,0, 'ADE']);
+          AppDM.Command.Execute;
+      end;
+    finally
+      RefreshActionExecute(self);
+    end;
+end;
+
+end.

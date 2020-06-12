@@ -1,0 +1,512 @@
+object AppDM: TAppDM
+  OldCreateOrder = False
+  Height = 388
+  Width = 664
+  object Connection: TADOConnection
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security In' +
+      'fo=False;Data Source=DESKTOP-OR4V1ON\F2012SQL'
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 16
+    Top = 16
+  end
+  object Cars: TADODataSet
+    Connection = Connection
+    Parameters = <>
+    Left = 96
+    Top = 16
+    object CarsUID: TIntegerField
+      FieldName = 'UID'
+    end
+    object CarsCATEGORY: TStringField
+      FieldName = 'CATEGORY'
+      Size = 5
+    end
+    object CarsMADEYEAR: TIntegerField
+      FieldName = 'MADEYEAR'
+    end
+    object CarsCARCASS: TStringField
+      FieldName = 'CARCASS'
+      Size = 40
+    end
+    object CarsCOLOR: TStringField
+      FieldName = 'COLOR'
+      Size = 40
+    end
+    object CarsMOTOR_POWER: TFloatField
+      FieldName = 'MOTOR_POWER'
+    end
+    object CarsECOLOGY: TStringField
+      FieldName = 'ECOLOGY'
+      Size = 30
+    end
+    object CarsRESERVE: TBooleanField
+      FieldName = 'RESERVE'
+    end
+    object CarsCREATE_DATE: TDateTimeField
+      FieldName = 'CREATE_DATE'
+    end
+    object CarsFAMILY: TStringField
+      FieldName = 'FAMILY'
+      Size = 10
+    end
+    object CarsWHO_CORR: TStringField
+      FieldName = 'WHO_CORR'
+      Size = 10
+    end
+    object CarsCORR_DATE: TDateTimeField
+      FieldName = 'CORR_DATE'
+    end
+    object CarsREG_SYBMOL: TStringField
+      FieldName = 'REG_SYBMOL'
+      Size = 15
+    end
+    object CarsVIN: TStringField
+      FieldName = 'VIN'
+      Size = 15
+    end
+    object CarsMODEL: TStringField
+      FieldName = 'MODEL'
+      Size = 15
+    end
+    object CarsTYPE_TC: TStringField
+      FieldName = 'TYPE_TC'
+      Size = 15
+    end
+  end
+  object DS_Cars: TDataSource
+    DataSet = Cars
+    Left = 96
+    Top = 80
+  end
+  object Command: TADOCommand
+    Connection = Connection
+    Parameters = <>
+    Left = 16
+    Top = 80
+  end
+  object DS_CarsDetail: TDataSource
+    DataSet = CarsDetail
+    Left = 160
+    Top = 80
+  end
+  object CarsDetail: TADODataSet
+    Connection = Connection
+    Parameters = <>
+    Left = 160
+    Top = 16
+    object CarsDetailROWID: TIntegerField
+      FieldName = 'ROWID'
+    end
+    object CarsDetailUID_CARS: TIntegerField
+      FieldName = 'UID_CARS'
+    end
+    object CarsDetailPASSPORT_NUM: TIntegerField
+      FieldName = 'PASSPORT_NUM'
+    end
+    object CarsDetailPASSPORT_SERIAL: TIntegerField
+      FieldName = 'PASSPORT_SERIAL'
+    end
+    object CarsDetailMASS_MAX: TFloatField
+      FieldName = 'MASS_MAX'
+    end
+    object CarsDetailMASS_LOADOUT: TFloatField
+      FieldName = 'MASS_LOADOUT'
+    end
+    object CarsDetailINS_NUM: TIntegerField
+      FieldName = 'INS_NUM'
+    end
+    object CarsDetailINS_SERIAL: TIntegerField
+      FieldName = 'INS_SERIAL'
+    end
+    object CarsDetailCHASSIS: TStringField
+      FieldName = 'CHASSIS'
+      Size = 15
+    end
+    object CarsDetailWORKSTATE: TStringField
+      FieldName = 'WORKSTATE'
+      Size = 30
+    end
+    object CarsDetailPRIMECH: TStringField
+      FieldName = 'PRIMECH'
+      Size = 200
+    end
+    object CarsDetailPASSPORT: TStringField
+      FieldName = 'PASSPORT'
+    end
+    object CarsDetailDOC_NUM: TIntegerField
+      FieldName = 'DOC_NUM'
+    end
+    object CarsDetailDOC_SERIAL: TIntegerField
+      FieldName = 'DOC_SERIAL'
+    end
+    object CarsDetailINS_Uid: TIntegerField
+      FieldName = 'INS_Uid'
+    end
+    object CarsDetailBEGDATE: TDateTimeField
+      FieldName = 'BEGDATE'
+    end
+    object CarsDetailENDDATE: TDateTimeField
+      FieldName = 'ENDDATE'
+    end
+  end
+  object Insurance: TADODataSet
+    Connection = Connection
+    Parameters = <>
+    Left = 224
+    Top = 16
+    object InsuranceUID: TIntegerField
+      FieldName = 'UID'
+    end
+    object InsuranceSERIAL: TIntegerField
+      FieldName = 'SERIAL'
+    end
+    object InsuranceNUMBER: TIntegerField
+      FieldName = 'NUMBER'
+    end
+    object InsuranceBEGDATE: TDateTimeField
+      FieldName = 'BEGDATE'
+    end
+    object InsuranceENDDATE: TDateTimeField
+      FieldName = 'ENDDATE'
+    end
+    object InsuranceFAMILY: TStringField
+      FieldName = 'FAMILY'
+    end
+    object InsuranceRESERVE: TBooleanField
+      FieldName = 'RESERVE'
+    end
+    object InsuranceINSCONCAT: TStringField
+      FieldName = 'INSCONCAT'
+    end
+    object InsurancePrimech: TStringField
+      FieldName = 'Primech'
+      Size = 200
+    end
+    object InsuranceDOC_DATE: TDateTimeField
+      FieldName = 'DOC_DATE'
+    end
+    object InsuranceCREATE_DATE: TDateTimeField
+      FieldName = 'CREATE_DATE'
+    end
+    object InsuranceCORR_DATE: TDateTimeField
+      FieldName = 'CORR_DATE'
+    end
+    object InsuranceWHO_CORR: TStringField
+      FieldName = 'WHO_CORR'
+      Size = 10
+    end
+    object InsuranceVALIDDAY: TIntegerField
+      FieldName = 'VALIDDAY'
+    end
+    object InsuranceArchive: TStringField
+      FieldName = 'Archive'
+      Size = 3
+    end
+  end
+  object InsuranceDetail: TADODataSet
+    Connection = Connection
+    Parameters = <>
+    Left = 288
+    Top = 16
+    object InsuranceDetailUID: TIntegerField
+      FieldName = 'UID'
+    end
+    object InsuranceDetailNUMBER: TIntegerField
+      FieldName = 'NUMBER'
+    end
+    object InsuranceDetailBEGDATE: TDateTimeField
+      FieldName = 'BEGDATE'
+    end
+    object InsuranceDetailDOC_DATE: TDateTimeField
+      FieldName = 'DOC_DATE'
+    end
+    object InsuranceDetailFAMILY: TStringField
+      FieldName = 'FAMILY'
+      Size = 10
+    end
+    object InsuranceDetailCREATE_DATE: TDateTimeField
+      FieldName = 'CREATE_DATE'
+    end
+    object InsuranceDetailWHO_CORR: TStringField
+      FieldName = 'WHO_CORR'
+      Size = 10
+    end
+    object InsuranceDetailCORR_DATE: TDateTimeField
+      FieldName = 'CORR_DATE'
+    end
+    object InsuranceDetailprimech: TStringField
+      FieldName = 'primech'
+      Size = 200
+    end
+    object InsuranceDetailRESERVE: TBooleanField
+      FieldName = 'RESERVE'
+    end
+    object InsuranceDetailMODEL: TStringField
+      FieldName = 'MODEL'
+      Size = 50
+    end
+    object InsuranceDetailREG_SYBMOL: TStringField
+      FieldName = 'REG_SYBMOL'
+      Size = 15
+    end
+    object InsuranceDetailTYPE_TC: TStringField
+      FieldName = 'TYPE_TC'
+      Size = 30
+    end
+    object InsuranceDetailCOLOR: TStringField
+      FieldName = 'COLOR'
+      Size = 40
+    end
+    object InsuranceDetailMADEYEAR: TIntegerField
+      FieldName = 'MADEYEAR'
+    end
+    object InsuranceDetailSERIAL: TIntegerField
+      FieldName = 'SERIAL'
+    end
+    object InsuranceDetailENDDATE: TDateTimeField
+      FieldName = 'ENDDATE'
+    end
+    object InsuranceDetailUID_CAR: TIntegerField
+      FieldName = 'UID_CAR'
+    end
+  end
+  object DS_Insurance: TDataSource
+    DataSet = Insurance
+    Left = 234
+    Top = 80
+  end
+  object Nakl: TADODataSet
+    Connection = Connection
+    Parameters = <>
+    Left = 16
+    Top = 176
+    object NaklUNICUM_NUM: TIntegerField
+      FieldName = 'UNICUM_NUM'
+    end
+    object NaklNUM_DOC: TIntegerField
+      FieldName = 'NUM_DOC'
+    end
+    object NaklDATE_DOC: TDateTimeField
+      FieldName = 'DATE_DOC'
+    end
+    object NaklSUM_DOC: TFloatField
+      FieldName = 'SUM_DOC'
+    end
+    object NaklDRIVER: TStringField
+      FieldName = 'DRIVER'
+      Size = 40
+    end
+    object NaklCAR_UID: TIntegerField
+      FieldName = 'CAR_UID'
+    end
+    object NaklTYPE_DOC: TStringField
+      FieldName = 'TYPE_DOC'
+    end
+    object NaklFAMILY: TStringField
+      FieldName = 'FAMILY'
+      Size = 30
+    end
+    object NaklCREATE_DATE: TDateTimeField
+      FieldName = 'CREATE_DATE'
+    end
+    object NaklWHO_CORR: TStringField
+      FieldName = 'WHO_CORR'
+      Size = 30
+    end
+    object NaklCORR_DATE: TStringField
+      FieldName = 'CORR_DATE'
+      Size = 30
+    end
+    object NaklREG_SYBMOL: TStringField
+      FieldName = 'REG_SYBMOL'
+    end
+    object NaklVIN: TStringField
+      FieldName = 'VIN'
+    end
+    object NaklMODEL: TStringField
+      FieldName = 'MODEL'
+    end
+    object NaklCOLOR: TStringField
+      FieldName = 'COLOR'
+      Size = 25
+    end
+  end
+  object Move: TADODataSet
+    Connection = Connection
+    Parameters = <>
+    Left = 80
+    Top = 176
+    object MoveROWID: TIntegerField
+      FieldName = 'ROWID'
+    end
+    object MoveUNICUM_NUM: TIntegerField
+      FieldName = 'UNICUM_NUM'
+    end
+    object MoveNUM_DOC: TIntegerField
+      FieldName = 'NUM_DOC'
+    end
+    object MoveNUM_PREDM: TIntegerField
+      FieldName = 'NUM_PREDM'
+    end
+    object MoveNAME_PREDM: TStringField
+      FieldName = 'NAME_PREDM'
+      Size = 30
+    end
+    object MoveKOLC_PREDM: TFloatField
+      FieldName = 'KOLC_PREDM'
+    end
+    object MoveSUM_PREDM: TFloatField
+      FieldName = 'SUM_PREDM'
+    end
+    object MoveFAMILY: TStringField
+      FieldName = 'FAMILY'
+      Size = 30
+    end
+    object MoveTYPE_DOC: TStringField
+      FieldName = 'TYPE_DOC'
+    end
+    object MoveCREATE_DATE: TDateTimeField
+      FieldName = 'CREATE_DATE'
+    end
+    object MoveWHO_CORR: TStringField
+      FieldName = 'WHO_CORR'
+    end
+    object MoveCORR_DATE: TDateTimeField
+      FieldName = 'CORR_DATE'
+    end
+    object MovePRIMECH: TStringField
+      FieldName = 'PRIMECH'
+      Size = 200
+    end
+  end
+  object DS_Nakl: TDataSource
+    DataSet = Nakl
+    Left = 16
+    Top = 248
+  end
+  object DS_Move: TDataSource
+    DataSet = Move
+    Left = 80
+    Top = 248
+  end
+  object GroupsProduct: TADODataSet
+    Connection = Connection
+    Parameters = <>
+    Left = 153
+    Top = 177
+    object GroupsProductNGROUP_TVR: TStringField
+      FieldName = 'NGROUP_TVR'
+      Size = 30
+    end
+    object GroupsProductNGROUP_TV2: TStringField
+      FieldName = 'NGROUP_TV2'
+      Size = 30
+    end
+    object GroupsProductNGROUP_TV3: TStringField
+      FieldName = 'NGROUP_TV3'
+      Size = 30
+    end
+    object GroupsProductNGROUP_TV4: TStringField
+      FieldName = 'NGROUP_TV4'
+      Size = 30
+    end
+    object GroupsProductNGROUP_TV5: TStringField
+      FieldName = 'NGROUP_TV5'
+      Size = 30
+    end
+    object GroupsProductNGROUP_TV6: TStringField
+      FieldName = 'NGROUP_TV6'
+      Size = 30
+    end
+  end
+  object Product: TADODataSet
+    Connection = Connection
+    Parameters = <>
+    Left = 240
+    Top = 184
+    object ProductCOD_ARTIC: TIntegerField
+      FieldName = 'COD_ARTIC'
+    end
+    object ProductNAME_ARTIC: TStringField
+      FieldName = 'NAME_ARTIC'
+      Size = 200
+    end
+    object ProductCENA_ARTIC: TFloatField
+      FieldName = 'CENA_ARTIC'
+    end
+    object ProductNDS_ARTIC: TFloatField
+      FieldName = 'NDS_ARTIC'
+    end
+    object ProductEDIN_IZMER: TStringField
+      FieldName = 'EDIN_IZMER'
+      Size = 100
+    end
+    object ProductKON_KOLCH: TFloatField
+      FieldName = 'KON_KOLCH'
+    end
+    object ProductVES_EDINIC: TFloatField
+      FieldName = 'VES_EDINIC'
+    end
+    object ProductEDN_V_UPAC: TFloatField
+      FieldName = 'EDN_V_UPAC'
+    end
+    object ProductNGROUP_TVR: TStringField
+      FieldName = 'NGROUP_TVR'
+      Size = 30
+    end
+    object ProductNGROUP_TV2: TStringField
+      FieldName = 'NGROUP_TV2'
+      Size = 30
+    end
+    object ProductNGROUP_TV3: TStringField
+      FieldName = 'NGROUP_TV3'
+      Size = 30
+    end
+    object ProductNGROUP_TV4: TStringField
+      FieldName = 'NGROUP_TV4'
+      Size = 30
+    end
+    object ProductNGROUP_TV5: TStringField
+      FieldName = 'NGROUP_TV5'
+      Size = 30
+    end
+    object ProductNGROUP_TV6: TStringField
+      FieldName = 'NGROUP_TV6'
+      Size = 30
+    end
+    object ProductTYPE_TOVR: TStringField
+      FieldName = 'TYPE_TOVR'
+    end
+    object ProductFAMILY: TStringField
+      FieldName = 'FAMILY'
+      Size = 30
+    end
+    object ProductCREATE_DATE: TDateTimeField
+      FieldName = 'CREATE_DATE'
+    end
+    object ProductWHO_CORR: TStringField
+      FieldName = 'WHO_CORR'
+      Size = 30
+    end
+    object ProductCORR_DATE: TDateTimeField
+      FieldName = 'CORR_DATE'
+    end
+  end
+  object DS_Product: TDataSource
+    DataSet = Product
+    Left = 240
+    Top = 248
+  end
+  object CarsStore: TADODataSet
+    Parameters = <>
+    Left = 480
+    Top = 88
+  end
+  object DS_CarsStore: TDataSource
+    DataSet = Insurance
+    Left = 474
+    Top = 144
+  end
+end

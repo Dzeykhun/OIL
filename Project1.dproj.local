@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.356,=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.244,=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.522,C:\Users\PC-ADE\Desktop\Работа\Unit1.pas=C:\Users\PC-ADE\Desktop\Работа\Date.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.484,=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.968,=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.059,C:\Users\PC-ADE\Desktop\Работа\Tovar.pas=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.635,C:\Users\PC-ADE\Desktop\Работа\CarDetail.pas=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.644,=C:\Users\PC-ADE\Desktop\Работа\AppData.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.796,=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.590,=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.056,C:\Users\PC-ADE\Desktop\Работа\Unit1.pas=C:\Users\PC-ADE\Desktop\Работа\OIL.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.360,C:\Users\PC-ADE\Desktop\Работа\Unit1.pas=C:\Users\PC-ADE\Desktop\Работа\Insurance.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.966,C:\Users\PC-ADE\Desktop\Работа\Unit1.pas=C:\Users\PC-ADE\Desktop\Работа\SConst.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.010,C:\Users\PC-ADE\Desktop\Работа\Unit1.pas=C:\Users\PC-ADE\Desktop\Работа\Fuel.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.657,C:\Users\PC-ADE\Desktop\Работа\Unit1.pas=C:\Users\PC-ADE\Desktop\Работа\Globals.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.203,=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.287,=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.269,=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.506,=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.849,C:\Users\PC-ADE\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\PC-ADE\Desktop\Работа\Main.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.059,C:\Users\PC-ADE\Desktop\Работа\Tovar.dfm=C:\Users\PC-ADE\Desktop\Работа\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.233,=C:\Users\PC-ADE\Desktop\Работа\InsuranceDetail.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.633,C:\Users\PC-ADE\Desktop\Работа\Child.pas=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.846,C:\Users\PC-ADE\Desktop\Работа\ProductDetail.pas=C:\Users\PC-ADE\Desktop\Работа\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.010,C:\Users\PC-ADE\Desktop\Работа\Unit1.dfm=C:\Users\PC-ADE\Desktop\Работа\Fuel.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.633,C:\Users\PC-ADE\Desktop\Работа\Child.dfm=C:\Users\PC-ADE\Desktop\Работа\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.522,C:\Users\PC-ADE\Desktop\Работа\Unit1.dfm=C:\Users\PC-ADE\Desktop\Работа\Date.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.360,C:\Users\PC-ADE\Desktop\Работа\Unit1.dfm=C:\Users\PC-ADE\Desktop\Работа\Insurance.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.056,C:\Users\PC-ADE\Desktop\Работа\Unit1.dfm=C:\Users\PC-ADE\Desktop\Работа\OIL.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.635,C:\Users\PC-ADE\Desktop\Работа\CarDetail.dfm=C:\Users\PC-ADE\Desktop\Работа\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.843,=C:\Users\PC-ADE\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.846,C:\Users\PC-ADE\Desktop\Работа\ProductDetail.dfm=C:\Users\PC-ADE\Desktop\Работа\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.525,C:\Users\PC-ADE\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\PC-ADE\Desktop\Работа\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.516,C:\Users\PC-ADE\Desktop\Работа\Fuel.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.783,=C:\Users\PC-ADE\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.849,C:\Users\PC-ADE\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\PC-ADE\Desktop\Работа\Main.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.746,=C:\Users\PC-ADE\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.222,=C:\Users\PC-ADE\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.401,=C:\Users\PC-ADE\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

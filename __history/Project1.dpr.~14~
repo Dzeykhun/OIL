@@ -1,0 +1,26 @@
+program Project1;
+
+uses
+  Vcl.Forms,
+  Main in 'Main.pas' {CarForm},
+  AppData in 'AppData.pas' {AppDM: TDataModule},
+  CarDetail in 'CarDetail.pas' {CarDetailForm},
+  SConst in 'SConst.pas',
+  OIL in 'OIL.pas' {MainForm},
+  Insurance in 'Insurance.pas' {InsuranceForm},
+  InsuranceDetail in 'InsuranceDetail.pas' {InsuranceDetailForm},
+  Date in 'Date.pas' {RangeForm},
+  Fuel in 'Fuel.pas' {RangeForm1},
+  Tovar in 'Tovar.pas' {ProductForm};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TAppDM, AppDM);
+  Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TRangeForm1, RangeForm1);
+  Application.CreateForm(TProductForm, ProductForm);
+  Application.Run;
+end.

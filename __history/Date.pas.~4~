@@ -1,0 +1,32 @@
+unit Date;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls,
+  Vcl.Buttons;
+
+type
+  TRangeForm = class(TForm)
+    Bevel1: TBevel;
+    Label1: TLabel;
+    Label2: TLabel;
+    BegDateTimePicker: TDateTimePicker;
+    EndDateTimePicker: TDateTimePicker;
+    OkBitBt: TBitBtn;
+    CancelBitBt: TBitBtn;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  RangeForm: TRangeForm;
+
+implementation
+
+{$R *.dfm}
+
+end.

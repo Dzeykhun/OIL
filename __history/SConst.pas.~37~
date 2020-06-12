@@ -1,0 +1,60 @@
+unit SConst;
+
+interface
+
+   resourcestring
+
+  SRange    =   '[%s] - [%s]';
+  SAllCategories = 'Товары всех групп';
+
+
+  // МОДУЛЬ АВТО
+  SSQLGetCars = 'EXEC OIL..O_GetCars %d';
+  SSQLGetCarDetail = 'EXEC OIL..O_GetCarDetail %d';
+  SSQLInsCar = 'EXEC OIL..O_InsCar ''%s'',  ''%s'', ''%s'', ''%s'', ''%s'', %d, ''%s'', ''%s'', ''%s'', ''%s'', %d, ''%s'', ' +
+                                       '%d, %d, ''%s'', ''%s'', %d,  ''%s'', ''%s'', %d, %d,  ''%s''';
+
+  SSQLCorrCar = 'EXEC OIL..O_CorrCar %d, ''%s'',  ''%s'', ''%s'', ''%s'', ''%s'', %d, ''%s'', ''%s'', ''%s'', ''%s'', %d, ''%s'', ' +
+                                        '%d, %d, ''%s'', ''%s'', %d, ''%s'', ''%s'', %d, %d,  ''%s''';
+  //Модуль страхование
+  SSQLInsInsurance = 'EXEC OIL..O_InsInsurance %d, %d, ''%s'' ,'' %s'', ''%s'', %d,'' %s'', %d, ''%s''';
+
+  SSQLGetInsurance = 'EXEC OIL..O_GetInsurance %d,''%s'',''%s''';
+
+  ssqlCorrIns =  'EXEC OIL..O_CorrIns %d, %d, %d, ''%s'',  ''%s'', ''%s'', %d, ''%s'', %d, ''%s''';
+  ssqlGetInsuranceDetail = 'EXEC OIL..O_GetInsuranceDetail %d' ;
+
+
+  SSQLTransferInsurance = 'EXEC OIL..O_TransferInsurance %d,%d ,''%s''';
+
+
+  SSQLDeleteInsuranse = 'EXEC OIL..O_DeleteInsuranse %d' ;
+
+
+  //Перевод автомобиля в резерв
+
+  SSQLTransferCar = 'EXEC OIL..O_TransferCar %d, %d, ''%s''';
+  SSQLDeleteCar = 'EXEC OIL..O_DeleteCar %d';
+
+
+  //Получение архивных записей страхового документа
+  SSQLGetInsuranseArc = 'EXEC OIL..O_GetInsuranseArc %d';
+
+  //
+  SSQLGetNakl = 'EXEC OIL..O_GetNakl ''%s'',''%s'',%d';
+  SSQLOGteNaklDetail = 'EXEC OIL..O_GteNaklDetail %d, %d';
+  SSQLInsNaklHead = 'EXEC OIL..O_InsNaklHead ''%s'',''%s'',''%s'',%d,''%s'',''%s'',''%s''';
+  SSQLOInsNaklMove = 'EXEC OIL..O_InsNaklMove %d,%d,%d,%d,''%s'',''%s'',''%s'',''%s''';
+  SSQLTransferNakl = 'EXEC OIL..O_TransferNakl %d,%d,''%s''' ;
+  SSQLNaklDelete = 'EXEC OIL..O_DelNakl %d' ;
+
+
+
+  SSQLGetProd = 'EXEC OIL..O_GetProd';
+  SSQLGetProdCategories = 'EXEC OIL..O_GetProdCategories';
+
+
+
+  implementation
+
+end.

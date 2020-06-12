@@ -1,0 +1,347 @@
+unit Tovar;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, System.Actions, Vcl.ActnList,
+  Vcl.Menus, System.ImageList, Vcl.ImgList, Data.Win.ADODB, Vcl.Buttons,
+  Vcl.ToolWin ,Globals, StrUtils;
+
+type
+  TProductForm = class(TForm)
+    ProductSB: TStatusBar;
+    GroupGB: TGroupBox;
+    TovarGB: TGroupBox;
+    ProductDBGrid: TDBGrid;
+    AL: TActionList;
+    IL: TImageList;
+    ProductPM: TPopupMenu;
+    Menu: TMainMenu;
+    GroupPM: TPopupMenu;
+    AddGroupAction: TAction;
+    CorrGroupAction: TAction;
+    DelGroupAction: TAction;
+    RefreshGroupAction: TAction;
+    AddProductAction: TAction;
+    CorrProductAction: TAction;
+    DelProductAction: TAction;
+    RefreshProductAction: TAction;
+    FindProductAction: TAction;
+    OpenAllTreeAction: TAction;
+    ChoseAllTreeAction: TAction;
+    CorrCateogorysProductAction: TAction;
+    CorrPriceAction: TAction;
+    FD: TFontDialog;
+    FontSettingGroupAction: TAction;
+    GroupTV: TTreeView;
+    Splitter1: TSplitter;
+    ToolBar1: TToolBar;
+    ToolButton3: TToolButton;
+    FontToolButton: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton7: TToolButton;
+    ToolBar2: TToolBar;
+    ToolButton4: TToolButton;
+    ToolButton8: TToolButton;
+    ToolButton9: TToolButton;
+    ToolButton10: TToolButton;
+    Panel1: TPanel;
+    Label1: TLabel;
+    TypeTovrCB: TComboBox;
+    Bevel1: TBevel;
+    Label2: TLabel;
+    ComboBox1: TComboBox;
+    Edit1: TEdit;
+    BitBtn1: TBitBtn;
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure AddProductActionExecute(Sender: TObject);
+    procedure FontToolButtonClick(Sender: TObject);
+    procedure ToolButton4Click(Sender: TObject);
+    procedure DelProductActionExecute(Sender: TObject);
+    procedure GroupTVGetImageIndex(Sender: TObject; Node: TTreeNode);
+    procedure GroupTVGetSelectedIndex(Sender: TObject; Node: TTreeNode);
+    procedure RefreshGroupActionExecute(Sender: TObject);
+    procedure RefreshProductActionExecute(Sender: TObject);
+  private
+    fgroup : array [0..PRODUCT_CATEGORIES -1] of  string[30];
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure SetTreeNodes(Tree : TTreeView);
+    constructor Create(value: ShortInt); overload;
+    function GetGroupStr : Variant;
+    procedure ClearGroup();
+    procedure GetGroups();
+    procedure GetTypeTovr();
+  published
+      property GroupStr : Variant read GetGroupStr;
+  end;
+
+var
+  ProductForm: TProductForm;
+
+implementation
+
+{$R *.dfm}
+
+uses AppData, SConst, ProductDetail, OIL;
+
+{ TProductForm }
+
+procedure TProductForm.AddProductActionExecute(Sender: TObject);
+var
+    ProdDetF: TProductDetailForm;
+begin
+   ProdDetF := TProductDetailForm.Create(Application);
+
+   try
+      if ProdDetF.ShowModal = mrOk then
+        ProdDetF.InsProduct();
+   finally
+     FreeAndNil(ProdDetF);
+   end;
+end;
+
+procedure TProductForm.BitBtn1Click(Sender: TObject);
+begin
+  if FD.Execute then
+  GroupTV.Font :=  FD.Font;
+end;
+
+procedure TProductForm.BitBtn2Click(Sender: TObject);
+begin
+    if FD.Execute then
+    ProductDBGrid.Font :=  FD.Font;
+end;
+
+procedure TProductForm.ClearGroup;
+var i: integer;
+begin
+  for i := 0 to PRODUCT_CATEGORIES -1 do
+  fgroup[i] := EmptyStr;
+end;
+
+constructor TProductForm.Create(value: ShortInt);
+begin
+ Inherited create(Application);
+  SetTreeNodes(self.GroupTV);
+end;
+
+procedure TProductForm.DelProductActionExecute(Sender: TObject);
+begin
+   if (AppDM.Product.Active) and
+      (not AppDM.Product.IsEmpty) then
+      begin
+         if MessageBox(Handle, 'Вы действительно хотите удалить документ?',  'Удалить документ', MB_ICONSTOP + MB_YESNO) = ID_YES then
+         try
+          AppDM.Command.CommandText := format(SSQLDelProduct, [AppDM.Product.FieldByName('Article').AsInteger]);
+          appdm.Command.Execute;
+          finally
+         end;
+
+      end;
+
+end;
+
+procedure TProductForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  action := caFree;
+end;
+
+
+procedure TProductForm.GetGroups;
+var Node: TTreeNode;
+begin
+  ClearGroup();
+
+end;
+
+function TProductForm.GetGroupStr: Variant;
+var item: TTreeNode;
+    str : string;
+begin
+  item := GroupTv.Selected;
+  if (not assigned(item)) or (item.level = 0) then
+    Result := SAllCategories
+  else
+    begin
+      str := item.Text;
+
+      while item.Level > 1 do
+      begin
+        item := item.Parent;
+        str := item.Text + ' - ' + str;
+      end;
+      Result := str;
+    end;
+end;
+
+procedure TProductForm.GetTypeTovr;
+begin
+  AppDM.TypeTovr.Active := False;
+  AppDM.TypeTovr.Active := True;
+
+    if not AppDM.TypeTovr.IsEmpty then
+    try
+      TypeTovrCB.Items.BeginUpdate;
+      TypeTovrCB.Items.Clear;
+      TypeTovrCB.Items.Add('[Выбрать]');
+
+
+      while not AppDM.TypeTovr.Eof do
+      begin
+        TypeTovrCB.Items.Add(AppDM.TypeTovr.FieldByName('TYPE_TOVR').AsString);
+        AppDM.TypeTovr.Next;
+      end;
+    finally
+      TypeTovrCB.Items.EndUpdate;
+      TypeTovrCB.ItemIndex := 0;
+      AppDM.TypeTovr.Active := false;
+    end;
+end;
+
+procedure TProductForm.GroupTVGetImageIndex(Sender: TObject; Node: TTreeNode);
+var idx : integer;
+begin
+    if Assigned(node) then
+    begin
+      if node.HasChildren then
+        idx := 9
+      else
+        idx := 10;
+      Node.ImageIndex := idx;
+      Node.SelectedIndex := idx;
+    end;
+end;
+
+procedure TProductForm.GroupTVGetSelectedIndex(Sender: TObject;
+  Node: TTreeNode);
+var idx : integer;
+begin
+    if Assigned(node) then
+    begin
+      if node.HasChildren then
+        idx := 9
+      else
+        idx := 10;
+      Node.ImageIndex := idx;
+      Node.SelectedIndex := idx;
+    end;
+end;
+
+
+procedure TProductForm.RefreshGroupActionExecute(Sender: TObject);
+begin
+  SetTreeNodes(GroupTV);
+end;
+
+procedure TProductForm.RefreshProductActionExecute(Sender: TObject);
+begin
+  screen.Cursor := crSQLWait;
+  try
+    AppDM.Product.Active := false;
+    AppDM.Product.CommandText := format(SSQLGetProducts, [fgroup[0],
+                                                          fgroup[1],
+                                                          fgroup[2],
+                                                          fgroup[3],
+                                                          fgroup[4],
+                                                          fgroup[5],
+                                                          ifthen(TypeTovrCB.ItemIndex = 0, EmptyStr, TypeTovrCB.Text)]);
+    AppDM.Product.Active := true;
+  finally
+    Screen.Cursor := crDefault;
+    AppDM.Product.EnableControls;
+  end;
+end;
+
+procedure TProductForm.SetTreeNodes(Tree: TTreeView);
+var
+    { Массив наименований категорий }
+  Categories: array[0..PRODUCT_CATEGORIES - 1] of TCategoryName;
+  { Массив узлов дерева (0 - всегда корень) }
+  Nodes:      array[0..PRODUCT_CATEGORIES] of TTreeNode;
+  { Узел, с которого надо добавлять дочерние }
+  Root, Node: TTreeNode;
+  { Счетчики заполненных полей (категорий) и количества совпадений }
+  Flds, Match, I: Integer;
+procedure ReadCategories;
+var
+  i:integer;
+  Str: String;
+  bOk: Boolean;
+  begin
+    Flds := 0;
+    Match := 0;
+    bOK := True;
+    for I := 0 to PRODUCT_CATEGORIES -1 do
+      begin
+        Str := AppDM.GroupsProduct.Fields[i].AsString;
+        if str <> EmptyStr then
+        begin
+          inc(flds);
+          bok := bok and (AnsiCompareText(categories[i],str)=0);
+          if bOk then inc(Match);
+        end;
+        Categories[i] := Str;
+      end;
+  end;
+  begin
+
+  AppDM.GroupsProduct.Active := false;
+  AppDM.GroupsProduct.CommandText := SSQLGetProdCategories;
+  AppDM.GroupsProduct.Active := true;
+
+  with Tree do
+  begin
+      Items.BeginUpdate()   ;
+      try
+        Items.Clear;
+        Root := Items.AddChildFirst(nil,SAllCategories);
+        Nodes[0] := Root;
+
+        for I := 1 to PRODUCT_CATEGORIES do
+          Nodes[0] := nil;
+
+        with AppDM.GroupsProduct do
+        begin
+          if Active then
+            Requery()
+          else
+            Active := true;
+
+
+          while not Eof do
+          begin
+            ReadCategories();
+
+            Nodes[i + 1] := items.AddChild(Node, categories[i]);
+            Node := Nodes[i + 1];
+          end;
+
+          next();
+          end;
+
+
+      finally
+        Items.EndUpdate;
+      end;
+  end;
+ end;
+procedure TProductForm.ToolButton4Click(Sender: TObject);
+begin
+    if FD.Execute then
+      ProductDBGrid.Font :=  FD.Font;
+end;
+
+procedure TProductForm.FontToolButtonClick(Sender: TObject);
+begin
+    if FD.Execute then
+      GroupTV.Font :=  FD.Font;
+end;
+
+end.
